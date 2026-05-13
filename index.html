@@ -4,391 +4,1403 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Ariele Couto - Neuropsicopedagoga | Anamnese</title>
-    
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://formspree.io; img-src 'self' data: https:;">
+
+    <!-- CSP corrigido: removido unsafe-inline, adicionado formspree como connect -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'self' https://formspree.io; img-src 'self' data: https:; frame-src https://www.google.com/recaptcha/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600&family=Lora:ital@0;1&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --ari-accent: #6B46C1; 
-            --user-accent: #805AD5; 
-            --app-bg: linear-gradient(135deg, #F4F0FA 0%, #E2E8F0 100%);
-            --ari-bubble-bg: #FFFFFF;
-            --primary-text: #2D3748; 
-            --secondary-text: #4A5568;
-            --success: #38A169; 
-            --input-bg: #FFFFFF;
-            --input-border: #CBD5E0;
-            --shadow-glass: 0 4px 30px rgba(0, 0, 0, 0.05);
-            --shadow-bubble: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-            --error-color: #E53E3E;
+            --ari-accent: #6B46C1;
+            --ari-accent-light: #9F7AEA;
+            --user-accent: #805AD5;
+            --app-bg: #F7F4FC;
+            --surface: #FFFFFF;
+            --primary-text: #1A1523;
+            --secondary-text: #5B5470;
+            --muted-text: #8B7FA8;
+            --success: #2D8A5E;
+            --success-bg: #E8F5EE;
+            --input-border: #D6CCF0;
+            --input-border-focus: #6B46C1;
+            --error: #C0392B;
+            --error-bg: #FDF0EE;
+            --shadow-sm: 0 2px 8px rgba(107,70,193,0.08);
+            --shadow-md: 0 4px 20px rgba(107,70,193,0.10);
+            --radius: 18px;
+            --radius-sm: 12px;
+            --progress-bg: #EDE9F8;
+            --progress-fill: #6B46C1;
+            --warn: #B7791F;
+            --warn-bg: #FFFBEB;
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                --app-bg: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
-                --ari-bubble-bg: #2D3748; 
-                --primary-text: #F7FAFC; 
-                --secondary-text: #CBD5E0;
-                --input-bg: #2D3748;
-                --input-border: #4A5568;
-                --success: #2F855A;
-                --error-color: #FC8181;
+                --app-bg: #13101C;
+                --surface: #1E1A2E;
+                --primary-text: #EDE9FF;
+                --secondary-text: #A99EC5;
+                --muted-text: #6B5F8A;
+                --input-border: #3A3052;
+                --input-border-focus: #9F7AEA;
+                --success: #38A169;
+                --success-bg: #1A2E22;
+                --error: #FC8181;
+                --error-bg: #2E1A1A;
+                --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+                --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+                --progress-bg: #2D2540;
+                --progress-fill: #9F7AEA;
+                --warn: #F6AD55;
+                --warn-bg: #2D2212;
             }
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; background: var(--app-bg); margin: 0; display: flex; flex-direction: column; height: 100dvh; overflow: hidden; color: var(--primary-text); }
-        
-        header { flex-shrink: 0; position: sticky; top: 0; z-index: 100; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 15px 20px; text-align: center; box-shadow: var(--shadow-glass); display: flex; flex-direction: column; align-items: center; }
-        
-        @media (prefers-color-scheme: dark) { header { background: rgba(26, 32, 44, 0.85); } }
 
-        .logo-ari { height: 75px; max-width: 200px; object-fit: contain; margin-bottom: 8px; transition: transform 0.3s ease; }
-        header h1 { margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--ari-accent); letter-spacing: -0.5px; }
-        header p { margin: 2px 0 0; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #718096; }
+        body {
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            background: var(--app-bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            overflow: hidden;
+            color: var(--primary-text);
+        }
 
-        #chat-container { flex: 1; overflow-y: auto; padding: 25px 15px; display: flex; flex-direction: column; gap: 18px; scroll-behavior: smooth; }
-        
-        .bubble { max-width: 85%; padding: 16px 20px; border-radius: 20px; line-height: 1.5; font-size: 1rem; animation: slideUp 0.3s ease-out forwards; position: relative; box-shadow: var(--shadow-bubble); opacity: 0; transform: translateY(15px); }
-        .ari { background-color: var(--ari-bubble-bg); color: var(--primary-text); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid rgba(0,0,0,0.02); }
-        .user { background: linear-gradient(135deg, var(--user-accent) 0%, var(--ari-accent) 100%); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .error-bubble { color: var(--error-color); font-weight: 600; border-left: 4px solid var(--error-color); }
+        /* ── HEADER ── */
+        header {
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--surface);
+            padding: 12px 20px 10px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: 1px solid var(--input-border);
+        }
 
-        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 5px; width: 100%; align-self: flex-start; animation: slideUp 0.3s ease-out forwards; opacity: 0; transform: translateY(15px); }
-        .btn-opt { background: var(--ari-bubble-bg); border: 2px solid var(--ari-accent); color: var(--primary-text); padding: 14px 20px; border-radius: 16px; cursor: pointer; font-size: 0.95rem; font-weight: 600; transition: all 0.2s ease; text-align: left; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-bubble); }
-        .btn-opt::after { content: ''; display: block; width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--ari-accent); transition: all 0.2s; }
-        .btn-opt.selected { background-color: var(--ari-accent); color: white; border-color: var(--ari-accent); }
-        .btn-opt.selected::after { background: white; border-color: white; box-shadow: inset 0 0 0 3px var(--ari-accent); }
-        
-        .btn-confirm { background-color: var(--success); color: white; border: none; padding: 16px; border-radius: 16px; font-weight: 700; cursor: pointer; margin-top: 5px; transition: background 0.2s ease; font-size: 1rem; box-shadow: 0 4px 10px rgba(56, 161, 105, 0.3); text-align: center; }
+        .header-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            justify-content: center;
+        }
 
-        .input-area { flex-shrink: 0; background: var(--ari-bubble-bg); padding: 15px; display: flex; gap: 10px; align-items: center; box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05); padding-bottom: calc(15px + env(safe-area-inset-bottom)); }
-        
-        input { flex: 1; padding: 15px 20px; border: 2px solid var(--input-border); border-radius: 25px; outline: none; font-size: 16px; transition: 0.2s; background-color: var(--input-bg); color: var(--primary-text); }
-        input:focus { border-color: var(--ari-accent); }
-        
-        .send-btn { background: var(--ari-accent); color: white; border: none; padding: 0 25px; border-radius: 25px; cursor: pointer; font-weight: bold; font-size: 1rem; height: 50px; transition: 0.2s; }
-        
-        #success-screen { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 20px; animation: slideUp 0.5s ease forwards; }
-        .icon-check { font-size: 5rem; color: var(--success); margin-bottom: 15px; }
-        #success-screen h2 { color: var(--primary-text); margin: 0 0 10px 0; font-size: 1.8rem; font-weight: 800; }
-        #success-screen p { color: var(--secondary-text); margin-bottom: 30px; line-height: 1.6; font-size: 1.05rem; max-width: 400px; }
-        .btn-whatsapp { background: #25D366; color: white; border: none; padding: 16px 30px; border-radius: 25px; font-size: 1.1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 300px; justify-content: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-        .btn-redo { background: none; border: none; color: #718096; text-decoration: underline; cursor: pointer; font-size: 0.95rem; padding: 10px; }
+        .logo-ari {
+            height: 52px;
+            width: 52px;
+            object-fit: contain;
+            border-radius: 14px;
+            filter: drop-shadow(0 2px 6px rgba(107,70,193,0.15));
+        }
 
-        .typing { font-size: 0.85rem; color: #A0AEC0; margin-left: 15px; font-style: italic; display: none; }
-        
-        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
+        .header-text h1 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--ari-accent);
+            letter-spacing: -0.3px;
+        }
+
+        .header-text p {
+            margin: 1px 0 0;
+            font-size: 0.72rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--muted-text);
+        }
+
+        /* ── BARRA DE PROGRESSO ── */
+        .progress-wrap {
+            width: 100%;
+            max-width: 480px;
+            margin-top: 10px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+
+        .progress-section {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--ari-accent);
+        }
+
+        .progress-count {
+            font-size: 0.72rem;
+            color: var(--muted-text);
+        }
+
+        .progress-bar {
+            height: 5px;
+            background: var(--progress-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--progress-fill);
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        /* ── CHAT ── */
+        #chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 22px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            scroll-behavior: smooth;
+        }
+
+        .bubble {
+            max-width: 84%;
+            padding: 14px 18px;
+            border-radius: var(--radius);
+            line-height: 1.55;
+            font-size: 0.97rem;
+            animation: slideUp 0.28s ease-out forwards;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .ari {
+            background: var(--surface);
+            color: var(--primary-text);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--input-border);
+        }
+
+        .ari strong {
+            font-family: 'Lora', serif;
+            font-style: italic;
+            color: var(--ari-accent);
+            font-weight: 400;
+        }
+
+        .user {
+            background: linear-gradient(135deg, var(--user-accent) 0%, var(--ari-accent) 100%);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .error-bubble {
+            background: var(--error-bg);
+            color: var(--error);
+            border: 1px solid;
+            border-color: var(--error);
+            border-radius: var(--radius-sm);
+        }
+
+        /* ── OPÇÕES ── */
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            align-self: flex-start;
+            max-width: 84%;
+            animation: slideUp 0.28s ease-out forwards;
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .btn-opt {
+            background: var(--surface);
+            border: 1.5px solid var(--input-border);
+            color: var(--primary-text);
+            padding: 13px 18px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 0.93rem;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.18s ease;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-opt::after {
+            content: '';
+            flex-shrink: 0;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 2px solid var(--input-border);
+            transition: all 0.18s;
+            margin-left: 12px;
+        }
+
+        .btn-opt.selected {
+            background: var(--ari-accent);
+            color: white;
+            border-color: var(--ari-accent);
+        }
+
+        .btn-opt.selected::after {
+            background: rgba(255,255,255,0.9);
+            border-color: transparent;
+        }
+
+        .btn-confirm {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            margin-top: 4px;
+            transition: opacity 0.18s ease;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(45,138,94,0.25);
+            text-align: center;
+        }
+
+        .btn-confirm:hover { opacity: 0.88; }
+
+        /* ── INPUT ── */
+        .input-area {
+            flex-shrink: 0;
+            background: var(--surface);
+            padding: 12px 16px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border-top: 1px solid var(--input-border);
+            padding-bottom: calc(12px + env(safe-area-inset-bottom));
+        }
+
+        input[type="text"], input[type="email"], input[type="tel"] {
+            flex: 1;
+            padding: 13px 18px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 25px;
+            outline: none;
+            font-size: 16px;
+            font-family: 'DM Sans', sans-serif;
+            transition: border-color 0.18s;
+            background: var(--app-bg);
+            color: var(--primary-text);
+        }
+
+        input:focus { border-color: var(--input-border-focus); }
+
+        .send-btn {
+            background: var(--ari-accent);
+            color: white;
+            border: none;
+            padding: 0 22px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.92rem;
+            height: 48px;
+            transition: opacity 0.18s;
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover { opacity: 0.88; }
+
+        /* ── TELA DE SUCESSO ── */
+        #success-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 24px;
+            animation: slideUp 0.5s ease forwards;
+            overflow-y: auto;
+        }
+
+        .icon-check {
+            font-size: 4rem;
+            margin-bottom: 16px;
+        }
+
+        #success-screen h2 {
+            color: var(--primary-text);
+            margin: 0 0 10px;
+            font-size: 1.6rem;
+            font-weight: 600;
+        }
+
+        #success-screen p {
+            color: var(--secondary-text);
+            margin-bottom: 28px;
+            line-height: 1.65;
+            font-size: 1rem;
+            max-width: 380px;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px 28px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 14px rgba(37,211,102,0.28);
+        }
+
+        .btn-redo {
+            background: none;
+            border: none;
+            color: var(--muted-text);
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-family: 'DM Sans', sans-serif;
+            padding: 10px;
+        }
+
+        /* ── MODAL TCLE ── */
+        #tcle-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(13,10,26,0.78);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+        }
+
+        @media (min-width: 600px) {
+            #tcle-modal { align-items: center; padding: 20px; }
+        }
+
+        .tcle-sheet {
+            background: var(--surface);
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 580px;
+            max-height: 92dvh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: sheetUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
+        }
+
+        @media (min-width: 600px) {
+            .tcle-sheet { border-radius: 20px; }
+        }
+
+        @keyframes sheetUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .tcle-header {
+            padding: 22px 24px 16px;
+            border-bottom: 1px solid var(--input-border);
+            flex-shrink: 0;
+        }
+
+        .tcle-header h2 {
+            margin: 0 0 4px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--ari-accent);
+        }
+
+        .tcle-header p {
+            margin: 0;
+            font-size: 0.82rem;
+            color: var(--muted-text);
+        }
+
+        .tcle-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 24px;
+        }
+
+        .tcle-body h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--ari-accent);
+            margin: 20px 0 8px;
+        }
+
+        .tcle-body h3:first-child { margin-top: 0; }
+
+        .tcle-body p, .tcle-body li {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            line-height: 1.65;
+            margin: 0 0 6px;
+        }
+
+        .tcle-body ul {
+            margin: 0 0 8px;
+            padding-left: 20px;
+        }
+
+        .tcle-body a {
+            color: var(--ari-accent);
+        }
+
+        .dados-box {
+            background: var(--progress-bg);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 8px 0;
+        }
+
+        .dados-box p { margin: 3px 0; font-size: 0.85rem; }
+
+        .tcle-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--input-border);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-bottom: calc(16px + env(safe-area-inset-bottom));
+        }
+
+        .tcle-check-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            font-size: 0.87rem;
+            color: var(--secondary-text);
+            line-height: 1.5;
+        }
+
+        .tcle-check-label input[type="checkbox"] {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            accent-color: var(--ari-accent);
+            margin-top: 1px;
+            cursor: pointer;
+        }
+
+        .btn-tcle-aceitar {
+            background: var(--ari-accent);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            opacity: 0.45;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .btn-tcle-aceitar.ativo {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn-tcle-recusar {
+            background: none;
+            border: none;
+            color: var(--muted-text);
+            font-size: 0.85rem;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            text-decoration: underline;
+            padding: 4px;
+            text-align: center;
+        }
+
+        /* ── MODAL DIREITOS ── */
+        #direitos-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 998;
+            background: rgba(13,10,26,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .direitos-card {
+            background: var(--surface);
+            border-radius: 20px;
+            max-width: 480px;
+            width: 100%;
+            padding: 28px 24px;
+            box-shadow: var(--shadow-md);
+            animation: sheetUp 0.3s ease;
+        }
+
+        .direitos-card h2 {
+            margin: 0 0 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--ari-accent);
+        }
+
+        .direitos-card p {
+            font-size: 0.9rem;
+            color: var(--secondary-text);
+            line-height: 1.6;
+            margin: 0 0 8px;
+        }
+
+        .direitos-card a {
+            color: var(--ari-accent);
+            font-weight: 500;
+        }
+
+        .btn-fechar-direitos {
+            margin-top: 16px;
+            width: 100%;
+            padding: 13px;
+            background: var(--app-bg);
+            border: 1.5px solid var(--input-border);
+            border-radius: var(--radius-sm);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: var(--primary-text);
+            cursor: pointer;
+        }
+
+        /* ── TIMEOUT AVISO ── */
+        #timeout-aviso {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 997;
+            background: var(--warn-bg);
+            border-bottom: 2px solid var(--warn);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: var(--warn);
+            font-weight: 500;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to   { transform: translateY(0); }
+        }
+
+        .btn-continuar-sessao {
+            background: var(--warn);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.84rem;
+            font-weight: 600;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        /* ── MISC ── */
+        .typing {
+            font-size: 0.82rem;
+            color: var(--muted-text);
+            margin-left: 4px;
+            font-style: italic;
+            display: none;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .hidden { display: none !important; }
 
-        @media (min-width: 768px) { #chat-container, .input-area { padding-left: 15vw; padding-right: 15vw; } .options-grid { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 768px) {
+            #chat-container { padding-left: 12vw; padding-right: 12vw; }
+            .input-area { padding-left: 12vw; padding-right: 12vw; }
+            .options-grid { max-width: 72%; }
+        }
+
+        /* Botão flutuante de direitos */
+        .btn-direitos-float {
+            position: fixed;
+            bottom: calc(80px + env(safe-area-inset-bottom));
+            right: 16px;
+            background: var(--surface);
+            border: 1.5px solid var(--input-border);
+            color: var(--muted-text);
+            font-size: 0.72rem;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            padding: 7px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            z-index: 90;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
     </style>
 </head>
 <body>
 
+<!-- ════ MODAL TCLE ════ -->
+<div id="tcle-modal" role="dialog" aria-modal="true" aria-labelledby="tcle-titulo">
+    <div class="tcle-sheet">
+        <div class="tcle-header">
+            <h2 id="tcle-titulo">Termo de Consentimento Livre e Esclarecido</h2>
+            <p>Leia atentamente antes de prosseguir — LGPD Art. 7º, 11º e 14º</p>
+        </div>
+        <div class="tcle-body">
+            <h3>1. Controlador dos Dados</h3>
+            <p><strong>Responsável:</strong> Ariele Couto — Neuropsicopedagoga (CBO: 2394-35)</p>
+            <p><strong>Contato DPO:</strong> <a href="mailto:coutoariele@gmail.com">coutoariele@gmail.com</a></p>
+
+            <h3>2. Finalidade do Tratamento</h3>
+            <p>Os dados coletados neste formulário têm como única finalidade a realização de <strong>triagem neuropsicopedagógica</strong> da criança indicada, para subsidiar o primeiro atendimento clínico presencial com a profissional Ariele Couto.</p>
+
+            <h3>3. Dados que serão coletados</h3>
+            <div class="dados-box">
+                <p>• Dados de identificação da criança (nome, data de nascimento, série escolar)</p>
+                <p>• Dados de contato do responsável (nome, e-mail, telefone)</p>
+                <p>• <strong>Dados sensíveis de saúde e desenvolvimento</strong> (histórico de desenvolvimento, comportamento, aprendizagem, aspectos emocionais, sono, diagnósticos anteriores e medicações)</p>
+            </div>
+            <p>Por envolver dados de <strong>menor de 18 anos</strong>, este tratamento está sujeito ao Art. 14 da LGPD, que exige proteção reforçada.</p>
+
+            <h3>4. Base Legal</h3>
+            <p>Tratamento realizado com base no <strong>consentimento do titular</strong> (Art. 7º, I da LGPD) e na <strong>tutela da saúde</strong> do menor (Art. 11, II, f da LGPD).</p>
+
+            <h3>5. Compartilhamento de Dados</h3>
+            <p>Os dados são transmitidos de forma segura via <strong>Formspree</strong> (processador de formulários GDPR-compliant) exclusivamente ao e-mail profissional da Neuropsicopedagoga. Não há compartilhamento com terceiros para fins comerciais.</p>
+
+            <h3>6. Retenção e Eliminação</h3>
+            <p>Os dados serão mantidos pelo prazo de <strong>5 (cinco) anos</strong> após o encerramento do acompanhamento, conforme recomendação do Conselho Federal de Psicopedagogia, e então eliminados de forma segura.</p>
+
+            <h3>7. Seus Direitos (Art. 18 LGPD)</h3>
+            <ul>
+                <li>Confirmação de existência de tratamento</li>
+                <li>Acesso aos dados</li>
+                <li>Correção de dados incompletos ou inexatos</li>
+                <li>Anonimização, bloqueio ou eliminação de dados desnecessários</li>
+                <li>Portabilidade dos dados</li>
+                <li>Eliminação dos dados tratados com consentimento</li>
+                <li><strong>Revogação do consentimento a qualquer momento</strong></li>
+            </ul>
+            <p>Para exercer qualquer direito, entre em contato: <a href="mailto:arielecouto@email.com.br">arielecouto@email.com.br</a></p>
+
+            <h3>8. Segurança</h3>
+            <p>Os dados são transmitidos via HTTPS com criptografia TLS. O formulário não armazena dados em banco de dados próprio — os dados chegam diretamente ao e-mail profissional da responsável pelo tratamento.</p>
+        </div>
+        <div class="tcle-footer">
+            <label class="tcle-check-label">
+                <input type="checkbox" id="chk-tcle" onchange="verificarConsentimento()">
+                <span>Li e compreendi o Termo de Consentimento. Sou responsável legal pela criança indicada e autorizo o tratamento dos dados para fins de triagem clínica.</span>
+            </label>
+            <button class="btn-tcle-aceitar" id="btn-aceitar-tcle" onclick="aceitarTCLE()">
+                Aceitar e iniciar a anamnese
+            </button>
+            <button class="btn-tcle-recusar" onclick="recusarTCLE()">
+                Não autorizo — sair
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ════ MODAL DIREITOS DO TITULAR ════ -->
+<div id="direitos-modal" class="hidden" role="dialog" aria-modal="true">
+    <div class="direitos-card">
+        <h2>Seus direitos sobre os dados</h2>
+        <p>Como responsável legal pela criança, você pode solicitar a qualquer momento:</p>
+        <p>• <strong>Acesso</strong> — ver os dados que foram enviados<br>
+           • <strong>Correção</strong> — corrigir informações incorretas<br>
+           • <strong>Eliminação</strong> — solicitar a exclusão dos dados<br>
+           • <strong>Revogação</strong> — revogar o consentimento dado</p>
+        <p>Entre em contato com a profissional responsável:<br>
+        <a href="mailto:arielecouto@email.com.br">arielecouto@email.com.br</a></p>
+        <p style="font-size:0.8rem; color: var(--muted-text); margin-top:12px;">Prazo de resposta: até 15 dias úteis, conforme Art. 18 §3º LGPD.</p>
+        <button class="btn-fechar-direitos" onclick="fecharDireitos()">Fechar</button>
+    </div>
+</div>
+
+<!-- ════ AVISO DE TIMEOUT ════ -->
+<div id="timeout-aviso" class="hidden">
+    <span>⏱ Sua sessão expirará em <strong id="timeout-contador">2:00</strong> por inatividade.</span>
+    <button class="btn-continuar-sessao" onclick="renovarSessao()">Continuar</button>
+</div>
+
+<!-- ════ HEADER ════ -->
 <header>
-    <img src="logoari.png" alt="[ERRO: Verifique no GitHub se o nome da imagem é logoari.jpeg, logoari.jpg ou logoari.png]" class="logo-ari">
-    <h1>Ariele Couto</h1>
-    <p>NEUROPSICOPEDAGOGA - CBO: 2394-35</p>
+    <div class="header-top">
+        <!-- INSTRUÇÃO: substitua logoari.jpeg pelo nome correto do arquivo de imagem -->
+        <img src="logoari.jpeg" alt="Logo Ariele Couto Neuropsicopedagoga" class="logo-ari">
+        <div class="header-text">
+            <h1>Ariele Couto</h1>
+            <p>Neuropsicopedagoga · CBO 2394-35</p>
+        </div>
+    </div>
+    <div class="progress-wrap" id="progress-wrap" style="display:none">
+        <div class="progress-label">
+            <span class="progress-section" id="progress-section-label">Consentimento</span>
+            <span class="progress-count" id="progress-count-label">Seção 1 de 14</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
 </header>
 
 <div id="chat-container">
     <div id="typing" class="typing">Ari está digitando...</div>
 </div>
 
-<div class="input-area" id="input-section">
+<div class="input-area hidden" id="input-section">
     <input type="text" id="user-input" placeholder="Escreva aqui..." autocomplete="off">
     <button class="send-btn" id="btn-send">Enviar</button>
 </div>
 
+<!-- Botão flutuante de direitos do titular -->
+<button class="btn-direitos-float hidden" id="btn-direitos-float" onclick="abrirDireitos()">
+    🔒 Meus dados
+</button>
+
 <div id="success-screen" class="hidden">
     <div class="icon-check">✅</div>
-    <h2>Anamnese Concluída!</h2>
+    <h2>Anamnese concluída!</h2>
     <p>Muito obrigada por partilhar a história do seu filho. Recebi as informações com segurança e analisarei cada detalhe com muito carinho.</p>
     <button class="btn-whatsapp" id="btn-whatsapp">💬 Falar com a Ari no WhatsApp</button>
-    <button class="btn-redo" id="btn-redo">↻ Refazer formulário</button>
+    <button class="btn-redo" id="btn-redo">↻ Preencher novamente</button>
+    <p style="font-size:0.78rem; color: var(--muted-text); margin-top:20px; max-width:320px; text-align:center;">
+        Para acessar, corrigir ou solicitar eliminação dos seus dados, entre em contato: 
+        <a href="mailto:arielecouto@email.com.br" style="color:var(--ari-accent)">arielecouto@email.com.br</a>
+    </p>
 </div>
 
 <script>
-    (function() {
-        'use strict';
-        
-        const CONFIG = { 
-            FORMSPREE_URL: "https://formspree.io/f/mykozndn", 
-            WHATSAPP_NUMBER: "5551990161624" 
-        };
-        
-        const container = document.getElementById('chat-container');
-        const input = document.getElementById('user-input');
-        const typing = document.getElementById('typing');
-        const inputSection = document.getElementById('input-section');
-        const successScreen = document.getElementById('success-screen');
-        
-        let responses = {};
-        let currentStep = 0; 
-        let tempMultiSelections = [];
-        
-        const flow = [ 
-            { key: 'lgpd', m: "Você autoriza o tratamento destes dados para fins de triagem clínica, conforme LGPD?", opts: ["Sim, autorizo", "Não autorizo"] }, 
-            { key: 'email', m: "Qual o seu melhor e-mail? (Para segurança caso precise refazer o teste)", valType: 'email' }, 
-            { key: 'nome', m: "1. IDENTIFICAÇÃO: Qual o nome da criança?" }, 
-            { key: 'nasc', m: "Qual a data de nascimento da criança? (Ex: 15/04/2015)", valType: 'date' }, 
-            { key: 'serie', m: "Qual a Série/Ano escolar?" }, 
-            { key: 'resp', m: "Qual o nome do(s) responsável(is)?" }, 
-            { key: 'tel', m: "Qual o telefone de contato (WhatsApp)? (Apenas números com DDD)", valType: 'phone' }, 
-            { key: 'q_princ', m: "2. QUEIXA PRINCIPAL: Quais dificuldades motivaram a busca por atendimento? (Selecione todas que se aplicam)", opts: ["Demora iniciar atividades", "Demora finalizar tarefas/provas", "Não conclui tarefas", "Dificuldade de atenção", "Dificuldade de aprendizagem", "Ansiedade em tarefas/provas", "Desmotivação escolar", "Outro"], multi: true }, 
-            { key: 'q_det', m: "Descreva com mais detalhes a queixa principal:" }, 
-            { key: 'gest', m: "3. HISTÓRICO: Como foram a gestação e o parto?", opts: ["Sem intercorrências", "Prematuridade", "Complicações", "Outro"] }, 
-            { key: 'atraso', m: "Houve atraso no desenvolvimento? (Selecione se aplicável)", opts: ["Não", "Fala", "Andar", "Interação social"], multi: true }, 
-            { key: 'fala_det', m: "Descreva brevemente o desenvolvimento da fala da criança:" }, 
-            { key: 'apr_dif', m: "4. APRENDIZAGEM: Apresenta dificuldades em quais áreas? (Selecione todas que se aplicam)", opts: ["Leitura", "Escrita", "Interpretação", "Matemática", "Organização", "Nenhuma"], multi: true }, 
-            { key: 'troca_let', m: "Troca letras ou sons?", opts: ["Sim", "Não", "Às vezes"] }, 
-            { key: 'comp', m: "5. ATENÇÃO E COMPORTAMENTO: Apresenta algum destes sinais? (Selecione todos que se aplicam)", opts: ["Distração frequente", "Dificuldade de concentração", "Inquietação", "Procrastinação", "Evita tarefas", "Nenhum"], multi: true }, 
-            { key: 'atencao', m: "Mantém a atenção até o final da tarefa?", opts: ["Sim", "Não", "Com ajuda"] }, 
-            { key: 'obs_aten', m: "Observações sobre atenção e comportamento:" }, 
-            { key: 'leit', m: "Sobre a leitura, como ela é?", opts: ["Fluente", "Lenta", "Silabada", "Dificuldade de compreensão", "Ainda não lê"] }, 
-            { key: 'esc', m: "Consegue escrever com autonomia?", opts: ["Sim", "Não", "Parcialmente"] }, 
-            { key: 'ini_tar', m: "Como inicia as tarefas?", opts: ["Sozinha", "Com ajuda", "Resiste"] }, 
-            { key: 'emoc', m: "6. ASPECTOS EMOCIONAIS: Demonstra algum destes sinais? (Selecione todos que se aplicam)", opts: ["Ansiedade", "Medo de errar", "Baixa autoestima", "Frustração fácil", "Tristeza frequente", "Nenhum"], multi: true }, 
-            { key: 'diag', m: "Já possui diagnóstico? Se sim, qual? (Se não, responda 'Não')" }, 
-            { key: 'frust', m: "Como reage à frustração?" }, 
-            { key: 'rotina', m: "7. ROTINA FAMILIAR: Em casa, ela...", opts: ["Cumpre combinados", "Precisa de lembretes", "Resiste às regras"] }, 
-            { key: 'tar_dom', m: "Ajuda em tarefas domésticas?", opts: ["Sim", "Não", "Às vezes"] }, 
-            { key: 'quais_tar', m: "Se sim, quais tarefas ajuda a realizar?" }, 
-            { key: 'comp_casa', m: "Descreva o comportamento geral em casa:" }, 
-            { key: 'temas_auto', m: "8. TAREFAS ESCOLARES: Realiza temas com autonomia?", opts: ["Sim", "Não", "Parcialmente"] }, 
-            { key: 'ajuda_temas', m: "Precisa de ajuda para os temas?", opts: ["Sempre", "Às vezes", "Raramente"] }, 
-            { key: 'demora_fin', m: "Demora para finalizar os temas?", opts: ["Sim", "Não"] }, 
-            { key: 'momento_tar', m: "Como é esse momento da tarefa em casa?" }, 
-            { key: 'sono', m: "9. SONO: Qual a qualidade do sono?", opts: ["Boa", "Regular", "Ruim"] }, 
-            { key: 'hrs_sono', m: "Quantas horas de sono por noite em média?" }, 
-            { key: 'dif_sono', m: "Apresenta dificuldade para: (Selecione aplicáveis)", opts: ["Dormir", "Acordar", "Acorda durante a noite", "Nenhuma"], multi: true }, 
-            { key: 'telas', m: "10. TELAS: Tempo diário de telas:", opts: ["Menos de 1h", "1 a 2h", "2 a 4h", "Mais de 4h"] }, 
-            { key: 'int_rot', m: "O uso de telas interfere na rotina?", opts: ["Sim", "Não"] }, 
-            { key: 'obs_telas', m: "Observações sobre o uso de telas:" }, 
-            { key: 'soc_cri', m: "11. SOCIALIZAÇÃO: Relacionamento com outras crianças:", opts: ["Bom", "Dificuldade", "Prefere ficar sozinha"] }, 
-            { key: 'amigos', m: "Tem amigos?", opts: ["Sim", "Não"] }, 
-            { key: 'conflitos', m: "Já apresentou conflitos ou isolamento?", opts: ["Sim", "Não"] }, 
-            { key: 'desc_conf', m: "Se sim, descreva os conflitos ou isolamento:" }, 
-            { key: 'esc_amb', m: "12. ESCOLA: Como é o ambiente escolar para ela?", opts: ["Acolhedor", "Estressante", "Indiferente"] }, 
-            { key: 'apoio_esc', m: "A escola oferece apoio?", opts: ["Sim", "Não", "Parcial"] }, 
-            { key: 'adapt', m: "Já foram feitas adaptações escolares?", opts: ["Sim", "Não"] }, 
-            { key: 'quais_adapt', m: "Se sim, quais adaptações?" }, 
-            { key: 'acomp', m: "13. SAÚDE: Já realizou acompanhamento com: (Selecione todos)", opts: ["Psicólogo", "Fonoaudiólogo", "Neurologista", "Psicopedagogo", "Outro", "Nenhum"], multi: true }, 
-            { key: 'med', m: "Faz uso de medicação? Se sim, qual? (Se não, responda 'Não')" }, 
-            { key: 'adic', m: "Há algo mais que considera importante relatar?" } 
-        ];
-        
-        // === INTELIGÊNCIA TRIPLA PARA VENCER O TECLADO ===
-        function scrollToBottom() { 
-            const forceScroll = () => {
-                container.scrollTop = container.scrollHeight;
-                inputSection.scrollIntoView({ behavior: "smooth", block: "end" });
-            };
-            setTimeout(forceScroll, 50);   // Antes do teclado
-            setTimeout(forceScroll, 350);  // Durante o teclado
-            setTimeout(forceScroll, 800);  // Para garantir se o celular for lento
-        }
+(function () {
+    'use strict';
 
-        function addBubble(text, type) { 
-            const b = document.createElement('div'); 
-            b.className = `bubble ${type}`; 
-            b.textContent = text; 
-            container.insertBefore(b, typing); 
-            scrollToBottom(); 
-        }
+    /* ── CONFIG ── */
+    const CONFIG = {
+        FORMSPREE_URL: "https://formspree.io/f/mykozndn",
+        WHATSAPP_NUMBER: "5551990161624",
+        TIMEOUT_AVISO_MS: 13 * 60 * 1000,   // 13 min: mostra aviso
+        TIMEOUT_ENCERRA_MS: 15 * 60 * 1000  // 15 min: encerra sessão
+    };
 
-        function validateInput(val, type) {
-            if (!val || !val.trim()) return "Por favor, digite uma resposta para continuarmos.";
-            
-            if (type === 'email') {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!re.test(val)) return "Ops! Parece que o e-mail é inválido. Digite um formato correto (ex: nome@email.com).";
-            }
-            if (type === 'phone') {
-                const digits = val.replace(/\D/g, '');
-                if (digits.length < 10) return "Número inválido. Lembre-se de colocar o DDD junto (ex: 51999999999).";
-            }
-            if (type === 'date') {
-                const re = /^\d{2}\/\d{2}\/\d{4}$/;
-                if (!re.test(val)) return "Formato inválido. Use DIA/MÊS/ANO com as barras (ex: 15/04/2015).";
-                
-                const parts = val.split('/');
-                const day = parseInt(parts[0], 10);
-                const month = parseInt(parts[1], 10);
-                const year = parseInt(parts[2], 10);
-                const currentYear = new Date().getFullYear();
-                
-                if (month < 1 || month > 12 || day < 1 || day > 31 || year < 1900 || year > currentYear) {
-                    return "Data impossível. Verifique os números e tente novamente.";
-                }
-            }
-            return null;
-        }
+    /* ── FLUXO com chaves semânticas curtas e seções mapeadas ── */
+    const SECOES = [
+        "Identificação",        // 0
+        "Queixa Principal",     // 1
+        "Histórico",            // 2
+        "Aprendizagem",         // 3
+        "Atenção e Comportamento", // 4
+        "Leitura e Escrita",    // 5
+        "Aspectos Emocionais",  // 6
+        "Rotina Familiar",      // 7
+        "Tarefas Escolares",    // 8
+        "Sono",                 // 9
+        "Telas",                // 10
+        "Socialização",         // 11
+        "Escola",               // 12
+        "Saúde"                 // 13
+    ];
 
-        function calculateAge(dateStr) {
-            const parts = dateStr.split('/');
-            const birthDate = new Date(parts[2], parts[1] - 1, parts[0]);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) { age--; }
-            return age;
-        }
-        
-        function showStep() { 
-            if (!flow[currentStep]) return finish(); 
-            const s = flow[currentStep]; 
-            typing.style.display = "block"; 
-            scrollToBottom(); 
-            
-            setTimeout(() => { 
-                typing.style.display = "none"; 
-                addBubble(s.m, "ari"); 
-                
-                if (s.opts) { 
-                    inputSection.classList.add('hidden'); 
-                    const grid = document.createElement('div'); 
-                    grid.className = "options-grid"; 
-                    tempMultiSelections = []; 
-                    
-                    s.opts.forEach(o => { 
-                        const btn = document.createElement('button'); 
-                        btn.className = "btn-opt"; 
-                        btn.textContent = o; 
-                        
-                        if (s.multi) { 
-                            btn.addEventListener('click', function() { 
-                                this.classList.toggle('selected'); 
-                                if(this.classList.contains('selected')) { 
-                                    tempMultiSelections.push(o); 
-                                } else { 
-                                    tempMultiSelections = tempMultiSelections.filter(item => item !== o); 
-                                } 
-                            }); 
-                        } else { 
-                            btn.addEventListener('click', () => handleAnswer(o)); 
-                        } 
-                        grid.appendChild(btn); 
-                    }); 
-                    
-                    if (s.multi) { 
-                        const confirmBtn = document.createElement('button'); 
-                        confirmBtn.className = "btn-confirm"; 
-                        confirmBtn.textContent = "Confirmar Escolhas"; 
-                        confirmBtn.addEventListener('click', () => { 
-                            const val = tempMultiSelections.length > 0 ? tempMultiSelections.join(", ") : "Nenhuma opção selecionada"; 
-                            handleAnswer(val); 
-                        }); 
-                        grid.appendChild(confirmBtn); 
-                    } 
-                    container.insertBefore(grid, typing); 
-                } else { 
-                    inputSection.classList.remove('hidden'); 
-                    input.focus(); 
-                } 
-                scrollToBottom(); 
-            }, 800); 
-        }
-        
-        function handleAnswer(val) { 
-            const currentStepData = flow[currentStep];
+    const flow = [
+        // Seção 0 — Identificação
+        { key: 'email',      sec: 0, m: "Qual o seu melhor e-mail? (Para contato, caso precise de suporte)", valType: 'email' },
+        { key: 'nome_cri',   sec: 0, m: "1. IDENTIFICAÇÃO: Qual o nome da criança?" },
+        { key: 'data_nasc',  sec: 0, m: "Qual a data de nascimento da criança? (Ex: 15/04/2015)", valType: 'date' },
+        { key: 'serie',      sec: 0, m: "Qual a Série/Ano escolar atual?" },
+        { key: 'nome_resp',  sec: 0, m: "Qual o nome do(s) responsável(is)?" },
+        { key: 'telefone',   sec: 0, m: "Qual o telefone de contato (WhatsApp)? Apenas números com DDD", valType: 'phone' },
 
-            if (currentStepData.valType) {
-                const errorMsg = validateInput(val, currentStepData.valType);
-                if (errorMsg) {
-                    addBubble(errorMsg, "ari error-bubble");
-                    if (!currentStepData.opts) {
-                        inputSection.classList.remove('hidden');
-                        input.focus();
-                    }
-                    scrollToBottom();
-                    return; 
-                }
-            }
+        // Seção 1 — Queixa Principal
+        { key: 'queixa_multi', sec: 1, m: "2. QUEIXA PRINCIPAL: Quais dificuldades motivaram a busca pelo atendimento? (Selecione todas que se aplicam)", opts: ["Demora iniciar atividades", "Demora finalizar tarefas/provas", "Não conclui tarefas", "Dificuldade de atenção", "Dificuldade de aprendizagem", "Ansiedade em tarefas/provas", "Desmotivação escolar", "Outro"], multi: true },
+        { key: 'queixa_detalhe', sec: 1, m: "Descreva com mais detalhes a queixa principal:" },
 
-            addBubble(val, "user"); 
-            const fullQuestionText = currentStepData.m; 
-            responses[fullQuestionText] = val; 
+        // Seção 2 — Histórico
+        { key: 'gestacao',   sec: 2, m: "3. HISTÓRICO: Como foram a gestação e o parto?", opts: ["Sem intercorrências", "Prematuridade", "Complicações", "Outro"] },
+        { key: 'atraso_dev', sec: 2, m: "Houve atraso no desenvolvimento? (Selecione se aplicável)", opts: ["Não", "Fala", "Andar", "Interação social"], multi: true },
+        { key: 'fala_hist',  sec: 2, m: "Descreva brevemente o desenvolvimento da fala da criança:" },
 
-            if (currentStepData.valType === 'date') {
-                const age = calculateAge(val);
-                responses["IDADE CALCULADA PELO SISTEMA"] = age + " anos";
-            }
-            
-            if (currentStepData.key === "lgpd" && val === "Não autorizo") { 
-                addBubble("Infelizmente não podemos prosseguir sem o consentimento.", "ari"); 
-                inputSection.classList.add('hidden'); 
-                const redo = document.createElement('button'); 
-                redo.className = "btn-confirm"; 
-                redo.textContent = "↻ Refazer Teste"; 
-                redo.addEventListener('click', restartAnamnese); 
-                container.insertBefore(redo, typing); 
-                scrollToBottom(); 
-                return; 
-            } 
-            
-            currentStep++; 
-            const grids = document.querySelectorAll('.options-grid'); 
-            grids.forEach(g => g.remove()); 
-            showStep(); 
-        }
-        
-        function handleSend() { 
-            if (input.value.trim()) { 
-                const v = input.value; 
-                input.value = ""; 
-                handleAnswer(v); 
-            } 
-        }
-        
-        function finish() { 
-            inputSection.classList.add('hidden'); 
-            addBubble("A processar os dados...", "ari"); 
-            responses["14. DATA E HORA DO PREENCHIMENTO"] = new Date().toLocaleString("pt-BR"); 
-            
-            fetch(CONFIG.FORMSPREE_URL, { 
-                method: "POST", 
-                headers: { "Accept": "application/json", "Content-Type": "application/json" }, 
-                body: JSON.stringify(responses) 
-            }).then(response => { 
-                if (response.ok) { 
-                    container.classList.add('hidden'); 
-                    successScreen.classList.remove('hidden'); 
-                } else { 
-                    addBubble("Erro no envio. Tente novamente.", "ari"); 
-                    inputSection.classList.remove('hidden'); 
-                } 
-            }).catch(() => addBubble("Erro de ligação. Verifique a sua internet.", "ari")); 
-        }
-        
-        function restartAnamnese() { 
-            responses = {}; 
-            currentStep = 0; 
-            const bubbles = container.querySelectorAll('.bubble, .options-grid, .btn-confirm'); 
-            bubbles.forEach(b => b.remove()); 
-            successScreen.classList.add('hidden'); 
-            container.classList.remove('hidden'); 
-            showStep(); 
-        }
-        
-        document.getElementById('btn-send').addEventListener('click', handleSend); 
-        document.getElementById('btn-whatsapp').addEventListener('click', () => { 
-            window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}`); 
-        }); 
-        document.getElementById('btn-redo').addEventListener('click', restartAnamnese); 
-        input.addEventListener("keypress", (e) => { 
-            if(e.key === "Enter") handleSend(); 
-        }); 
-        
-        window.addEventListener('resize', scrollToBottom);
-        input.addEventListener("focus", scrollToBottom);
-        input.addEventListener("click", scrollToBottom);
-        
+        // Seção 3 — Aprendizagem
+        { key: 'dif_apren',  sec: 3, m: "4. APRENDIZAGEM: Apresenta dificuldades em quais áreas? (Selecione todas que se aplicam)", opts: ["Leitura", "Escrita", "Interpretação", "Matemática", "Organização", "Nenhuma"], multi: true },
+        { key: 'troca_let',  sec: 3, m: "Troca letras ou sons?", opts: ["Sim", "Não", "Às vezes"] },
+
+        // Seção 4 — Atenção e Comportamento
+        { key: 'sinais_aten', sec: 4, m: "5. ATENÇÃO E COMPORTAMENTO: Apresenta algum destes sinais? (Selecione todos que se aplicam)", opts: ["Distração frequente", "Dificuldade de concentração", "Inquietação", "Procrastinação", "Evita tarefas", "Nenhum"], multi: true },
+        { key: 'atencao_fim', sec: 4, m: "Mantém a atenção até o final da tarefa?", opts: ["Sim", "Não", "Com ajuda"] },
+        { key: 'obs_comp',   sec: 4, m: "Observações sobre atenção e comportamento:" },
+
+        // Seção 5 — Leitura e Escrita
+        { key: 'leitura',    sec: 5, m: "Como é a leitura da criança?", opts: ["Fluente", "Lenta", "Silabada", "Dificuldade de compreensão", "Ainda não lê"] },
+        { key: 'escrita',    sec: 5, m: "Consegue escrever com autonomia?", opts: ["Sim", "Não", "Parcialmente"] },
+        { key: 'inicio_tar', sec: 5, m: "Como inicia as tarefas?", opts: ["Sozinha", "Com ajuda", "Resiste"] },
+
+        // Seção 6 — Aspectos Emocionais
+        { key: 'emoc_sinais', sec: 6, m: "6. ASPECTOS EMOCIONAIS: Demonstra algum destes sinais? (Selecione todos que se aplicam)", opts: ["Ansiedade", "Medo de errar", "Baixa autoestima", "Frustração fácil", "Tristeza frequente", "Nenhum"], multi: true },
+        { key: 'diagnostico', sec: 6, m: "Já possui diagnóstico? Se sim, qual? (Se não, responda 'Não')" },
+        { key: 'frustracao',  sec: 6, m: "Como reage à frustração?" },
+
+        // Seção 7 — Rotina Familiar
+        { key: 'rotina',      sec: 7, m: "7. ROTINA FAMILIAR: Em casa, ela...", opts: ["Cumpre combinados", "Precisa de lembretes", "Resiste às regras"] },
+        { key: 'tarefas_dom', sec: 7, m: "Ajuda em tarefas domésticas?", opts: ["Sim", "Não", "Às vezes"] },
+        { key: 'quais_tdom',  sec: 7, m: "Se sim, quais tarefas ajuda a realizar?" },
+        { key: 'comp_casa',   sec: 7, m: "Descreva o comportamento geral em casa:" },
+
+        // Seção 8 — Tarefas Escolares
+        { key: 'temas_auto',  sec: 8, m: "8. TAREFAS ESCOLARES: Realiza os temas com autonomia?", opts: ["Sim", "Não", "Parcialmente"] },
+        { key: 'ajuda_temas', sec: 8, m: "Precisa de ajuda para os temas?", opts: ["Sempre", "Às vezes", "Raramente"] },
+        { key: 'demora_fin',  sec: 8, m: "Demora para finalizar os temas?", opts: ["Sim", "Não"] },
+        { key: 'moment_tar',  sec: 8, m: "Como é esse momento da tarefa em casa?" },
+
+        // Seção 9 — Sono
+        { key: 'sono_qual',   sec: 9, m: "9. SONO: Qual a qualidade do sono?", opts: ["Boa", "Regular", "Ruim"] },
+        { key: 'sono_horas',  sec: 9, m: "Quantas horas de sono por noite em média?" },
+        { key: 'sono_dif',    sec: 9, m: "Apresenta dificuldade para: (Selecione aplicáveis)", opts: ["Dormir", "Acordar", "Acorda durante a noite", "Nenhuma"], multi: true },
+
+        // Seção 10 — Telas
+        { key: 'telas_tempo', sec: 10, m: "10. TELAS: Tempo diário de telas:", opts: ["Menos de 1h", "1 a 2h", "2 a 4h", "Mais de 4h"] },
+        { key: 'telas_rot',   sec: 10, m: "O uso de telas interfere na rotina?", opts: ["Sim", "Não"] },
+        { key: 'telas_obs',   sec: 10, m: "Observações sobre o uso de telas:" },
+
+        // Seção 11 — Socialização
+        { key: 'social',      sec: 11, m: "11. SOCIALIZAÇÃO: Relacionamento com outras crianças:", opts: ["Bom", "Dificuldade", "Prefere ficar sozinha"] },
+        { key: 'amigos',      sec: 11, m: "Tem amigos?", opts: ["Sim", "Não"] },
+        { key: 'conflitos',   sec: 11, m: "Já apresentou conflitos ou isolamento?", opts: ["Sim", "Não"] },
+        { key: 'conf_desc',   sec: 11, m: "Se sim, descreva os conflitos ou isolamento:" },
+
+        // Seção 12 — Escola
+        { key: 'esc_amb',     sec: 12, m: "12. ESCOLA: Como é o ambiente escolar para ela?", opts: ["Acolhedor", "Estressante", "Indiferente"] },
+        { key: 'esc_apoio',   sec: 12, m: "A escola oferece apoio?", opts: ["Sim", "Não", "Parcial"] },
+        { key: 'adaptacoes',  sec: 12, m: "Já foram feitas adaptações escolares?", opts: ["Sim", "Não"] },
+        { key: 'quais_adapt', sec: 12, m: "Se sim, quais adaptações foram feitas?" },
+
+        // Seção 13 — Saúde
+        { key: 'acompanham',  sec: 13, m: "13. SAÚDE: Já realizou acompanhamento com: (Selecione todos)", opts: ["Psicólogo", "Fonoaudiólogo", "Neurologista", "Psicopedagogo", "Outro", "Nenhum"], multi: true },
+        { key: 'medicacao',   sec: 13, m: "Faz uso de medicação? Se sim, qual? (Se não, responda 'Não')" },
+        { key: 'observ_fin',  sec: 13, m: "Há algo mais que considera importante relatar?" }
+    ];
+
+    /* ── ALERTAS CLÍNICOS (igual weight) ── */
+    const ALERTAS_CONFIG = {
+        desenvolvimento: { key: 'atraso_dev',   valores: ['Fala','Andar','Interação social'] },
+        academico:       { key: 'dif_apren',     valores: ['Leitura','Escrita','Matemática'] },
+        emocional:       { key: 'emoc_sinais',   valores: ['Baixa autoestima','Frustração fácil','Tristeza frequente'] }
+    };
+
+    /* ── ESTADO ── */
+    let respostas = {};
+    let currentStep = 0;
+    let tempMulti = [];
+    let consentidoEm = null;
+    let timeoutAviso = null;
+    let timeoutEncerra = null;
+    let contadorInterval = null;
+
+    /* ── ELEMENTOS DOM ── */
+    const container     = document.getElementById('chat-container');
+    const inputEl       = document.getElementById('user-input');
+    const typingEl      = document.getElementById('typing');
+    const inputSection  = document.getElementById('input-section');
+    const successScreen = document.getElementById('success-screen');
+    const progressWrap  = document.getElementById('progress-wrap');
+    const progressFill  = document.getElementById('progress-fill');
+    const progressSec   = document.getElementById('progress-section-label');
+    const progressCnt   = document.getElementById('progress-count-label');
+    const timeoutAvEl   = document.getElementById('timeout-aviso');
+    const timeoutCont   = document.getElementById('timeout-contador');
+    const btnDirFloat   = document.getElementById('btn-direitos-float');
+
+    /* ════════════════════════════════════
+       TCLE
+    ════════════════════════════════════ */
+    window.verificarConsentimento = function () {
+        const chk = document.getElementById('chk-tcle');
+        const btn = document.getElementById('btn-aceitar-tcle');
+        btn.classList.toggle('ativo', chk.checked);
+    };
+
+    window.aceitarTCLE = function () {
+        consentidoEm = new Date().toISOString();
+        document.getElementById('tcle-modal').classList.add('hidden');
+        progressWrap.style.display = '';
+        btnDirFloat.classList.remove('hidden');
+        iniciarSessaoTimeout();
         showStep();
-        
-    })();
+    };
+
+    window.recusarTCLE = function () {
+        document.getElementById('tcle-modal').innerHTML = '';
+        document.body.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;padding:40px;text-align:center;font-family:'DM Sans',sans-serif;background:var(--app-bg);color:var(--primary-text)">
+                <p style="font-size:1rem;color:var(--secondary-text);max-width:340px;line-height:1.7;">
+                    O consentimento é necessário para prosseguir com a triagem. Nenhum dado foi coletado.<br><br>
+                    Se desejar participar no futuro, acesse esta página novamente.
+                </p>
+                <a href="mailto:arielecouto@email.com.br" style="color:#6B46C1;font-size:0.88rem;margin-top:8px;">arielecouto@email.com.br</a>
+            </div>`;
+    };
+
+    /* ════════════════════════════════════
+       TIMEOUT DE SESSÃO
+    ════════════════════════════════════ */
+    function iniciarSessaoTimeout() {
+        limparTimeouts();
+        timeoutAviso = setTimeout(() => {
+            timeoutAvEl.classList.remove('hidden');
+            iniciarContador(120); // 2 min para encerrar após aviso
+        }, CONFIG.TIMEOUT_AVISO_MS);
+
+        timeoutEncerra = setTimeout(() => {
+            encerrarPorInatividade();
+        }, CONFIG.TIMEOUT_ENCERRA_MS);
+    }
+
+    function iniciarContador(segundos) {
+        let restante = segundos;
+        contadorInterval = setInterval(() => {
+            restante--;
+            const m = Math.floor(restante / 60);
+            const s = restante % 60;
+            timeoutCont.textContent = `${m}:${s.toString().padStart(2,'0')}`;
+            if (restante <= 0) clearInterval(contadorInterval);
+        }, 1000);
+    }
+
+    function limparTimeouts() {
+        clearTimeout(timeoutAviso);
+        clearTimeout(timeoutEncerra);
+        clearInterval(contadorInterval);
+    }
+
+    function encerrarPorInatividade() {
+        limparTimeouts();
+        respostas = {};
+        document.body.innerHTML = `
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100dvh;padding:40px;text-align:center;font-family:'DM Sans',sans-serif;background:var(--app-bg);color:var(--primary-text)">
+                <p style="font-size:1rem;color:var(--secondary-text);max-width:340px;line-height:1.7;">
+                    Sua sessão foi encerrada por inatividade para proteção dos dados.<br>Nenhuma informação foi enviada.
+                </p>
+                <button onclick="location.reload()" style="margin-top:20px;padding:14px 28px;background:#6B46C1;color:white;border:none;border-radius:12px;font-size:0.95rem;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;">
+                    Reiniciar
+                </button>
+            </div>`;
+    }
+
+    window.renovarSessao = function () {
+        timeoutAvEl.classList.add('hidden');
+        clearInterval(contadorInterval);
+        iniciarSessaoTimeout();
+        atividade();
+    };
+
+    // Renova ao interagir
+    function atividade() {
+        if (consentidoEm) iniciarSessaoTimeout();
+    }
+
+    ['click','keypress','touchstart'].forEach(ev => {
+        document.addEventListener(ev, atividade, { passive: true });
+    });
+
+    /* ════════════════════════════════════
+       DIREITOS DO TITULAR
+    ════════════════════════════════════ */
+    window.abrirDireitos = function () {
+        document.getElementById('direitos-modal').classList.remove('hidden');
+    };
+
+    window.fecharDireitos = function () {
+        document.getElementById('direitos-modal').classList.add('hidden');
+    };
+
+    /* ════════════════════════════════════
+       PROGRESSO
+    ════════════════════════════════════ */
+    function atualizarProgresso() {
+        const totalSecs = SECOES.length;
+        const secAtual = flow[currentStep] ? flow[currentStep].sec : totalSecs - 1;
+        const pct = Math.round(((secAtual) / totalSecs) * 100);
+        progressFill.style.width = pct + '%';
+        progressSec.textContent = SECOES[secAtual] || 'Concluindo';
+        progressCnt.textContent = `Seção ${secAtual + 1} de ${totalSecs}`;
+    }
+
+    /* ════════════════════════════════════
+       RASCUNHO — sessionStorage
+       (dados ficam APENAS na sessão do browser, 
+        apagados ao fechar a aba — sem persistência)
+    ════════════════════════════════════ */
+    function salvarRascunho() {
+        try {
+            sessionStorage.setItem('ari_draft', JSON.stringify({ step: currentStep, respostas }));
+        } catch (e) { /* sessionStorage indisponível */ }
+    }
+
+    function carregarRascunho() {
+        try {
+            const d = sessionStorage.getItem('ari_draft');
+            if (!d) return false;
+            const parsed = JSON.parse(d);
+            if (parsed.step > 0) {
+                currentStep = parsed.step;
+                respostas = parsed.respostas || {};
+                return true;
+            }
+        } catch (e) { /* falha silenciosa */ }
+        return false;
+    }
+
+    function limparRascunho() {
+        try { sessionStorage.removeItem('ari_draft'); } catch (e) {}
+    }
+
+    /* ════════════════════════════════════
+       SCROLL
+    ════════════════════════════════════ */
+    function scrollToBottom() {
+        const forcar = () => {
+            container.scrollTop = container.scrollHeight;
+        };
+        setTimeout(forcar, 50);
+        setTimeout(forcar, 350);
+        setTimeout(forcar, 700);
+    }
+
+    /* ════════════════════════════════════
+       BOLHA
+    ════════════════════════════════════ */
+    function addBubble(html, tipo) {
+        const b = document.createElement('div');
+        b.className = `bubble ${tipo}`;
+        if (tipo === 'ari') {
+            b.innerHTML = html; // controlado internamente — nunca vem do usuário
+        } else {
+            b.textContent = html; // resposta do usuário: sempre textContent (anti-XSS)
+        }
+        container.insertBefore(b, typingEl);
+        scrollToBottom();
+    }
+
+    /* ════════════════════════════════════
+       VALIDAÇÃO
+    ════════════════════════════════════ */
+    function validarInput(val, tipo) {
+        if (!val || !val.trim()) return "Por favor, escreva uma resposta para continuarmos.";
+
+        if (tipo === 'email') {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!re.test(val)) return "E-mail inválido. Use o formato: nome@provedor.com";
+        }
+
+        if (tipo === 'phone') {
+            const digits = val.replace(/\D/g, '');
+            if (digits.length < 10 || digits.length > 13)
+                return "Número inválido. Inclua o DDD (ex: 51999999999).";
+        }
+
+        if (tipo === 'date') {
+            const re = /^\d{2}\/\d{2}\/\d{4}$/;
+            if (!re.test(val)) return "Formato incorreto. Use DIA/MÊS/ANO com barras (ex: 15/04/2015).";
+
+            const [d, m, a] = val.split('/').map(Number);
+            const hoje = new Date();
+            const data = new Date(a, m - 1, d);
+
+            // Verifica se a data é real (ex: 31/02 não existe)
+            if (
+                data.getFullYear() !== a ||
+                data.getMonth() !== m - 1 ||
+                data.getDate() !== d
+            ) return "Esta data não existe. Verifique o dia e o mês.";
+
+            if (data > hoje) return "A data de nascimento não pode ser no futuro.";
+            if (a < 1990) return "Verifique o ano de nascimento.";
+
+            const idadeAnos = calcularIdade(val);
+            if (idadeAnos < 2) return "Verifique a data — a criança parece muito nova para a triagem escolar.";
+            if (idadeAnos > 25) return "Verifique a data de nascimento informada.";
+        }
+
+        return null;
+    }
+
+    function calcularIdade(dateStr) {
+        const [d, m, a] = dateStr.split('/').map(Number);
+        const nasc = new Date(a, m - 1, d);
+        const hoje = new Date();
+        let idade = hoje.getFullYear() - nasc.getFullYear();
+        const mesOk = hoje.getMonth() - nasc.getMonth();
+        if (mesOk < 0 || (mesOk === 0 && hoje.getDate() < nasc.getDate())) idade--;
+        return idade;
+    }
+
+    /* ════════════════════════════════════
+       ALERTAS CLÍNICOS
+    ════════════════════════════════════ */
+    function gerarAlertas() {
+        const alertas = [];
+        for (const [area, cfg] of Object.entries(ALERTAS_CONFIG)) {
+            const resp = respostas[cfg.key] || '';
+            const found = cfg.valores.filter(v => resp.includes(v));
+            if (found.length > 0) {
+                alertas.push(`ALERTA ${area.toUpperCase()}: ${found.join(', ')}`);
+            }
+        }
+        return alertas.length > 0 ? alertas.join(' | ') : 'Nenhum alerta de prioridade máxima';
+    }
+
+    /* ════════════════════════════════════
+       EXIBIR PASSO
+    ════════════════════════════════════ */
+    function showStep() {
+        if (!flow[currentStep]) return finish();
+
+        atualizarProgresso();
+        const s = flow[currentStep];
+
+        typingEl.style.display = "block";
+        scrollToBottom();
+
+        setTimeout(() => {
+            typingEl.style.display = "none";
+            addBubble(s.m, "ari");
+
+            if (s.opts) {
+                inputSection.classList.add('hidden');
+                const grid = document.createElement('div');
+                grid.className = "options-grid";
+                tempMulti = [];
+
+                s.opts.forEach(o => {
+                    const btn = document.createElement('button');
+                    btn.className = "btn-opt";
+                    btn.textContent = o;
+
+                    if (s.multi) {
+                        btn.addEventListener('click', function () {
+                            this.classList.toggle('selected');
+                            if (this.classList.contains('selected')) {
+                                tempMulti.push(o);
+                            } else {
+                                tempMulti = tempMulti.filter(i => i !== o);
+                            }
+                        });
+                    } else {
+                        btn.addEventListener('click', () => handleAnswer(o));
+                    }
+                    grid.appendChild(btn);
+                });
+
+                if (s.multi) {
+                    const confirmBtn = document.createElement('button');
+                    confirmBtn.className = "btn-confirm";
+                    confirmBtn.textContent = "Confirmar escolhas";
+                    confirmBtn.addEventListener('click', () => {
+                        const val = tempMulti.length > 0
+                            ? tempMulti.join(", ")
+                            : "Nenhuma opção selecionada";
+                        handleAnswer(val);
+                    });
+                    grid.appendChild(confirmBtn);
+                }
+
+                container.insertBefore(grid, typingEl);
+            } else {
+                inputSection.classList.remove('hidden');
+                inputEl.focus();
+            }
+
+            scrollToBottom();
+        }, 750);
+    }
+
+    /* ════════════════════════════════════
+       PROCESSAR RESPOSTA
+    ════════════════════════════════════ */
+    function handleAnswer(val) {
+        const s = flow[currentStep];
+
+        if (s.valType) {
+            const erro = validarInput(val, s.valType);
+            if (erro) {
+                addBubble(erro, "ari error-bubble");
+                if (!s.opts) {
+                    inputSection.classList.remove('hidden');
+                    inputEl.focus();
+                }
+                scrollToBottom();
+                return;
+            }
+        }
+
+        addBubble(val, "user");
+
+        // Chave semântica curta — não expõe o texto completo da pergunta
+        respostas[s.key] = val.trim();
+
+        // Calcula idade e armazena junto
+        if (s.valType === 'date') {
+            respostas['idade_calculada'] = calcularIdade(val) + ' anos';
+        }
+
+        currentStep++;
+
+        // Remover grids anteriores
+        document.querySelectorAll('.options-grid').forEach(g => g.remove());
+
+        salvarRascunho();
+        showStep();
+    }
+
+    /* ════════════════════════════════════
+       ENVIAR
+    ════════════════════════════════════ */
+    function handleSend() {
+        const v = inputEl.value.trim();
+        if (v) {
+            inputEl.value = "";
+            handleAnswer(v);
+        }
+    }
+
+    /* ════════════════════════════════════
+       FINALIZAR E ENVIAR
+    ════════════════════════════════════ */
+    function finish() {
+        inputSection.classList.add('hidden');
+        progressFill.style.width = '100%';
+        progressSec.textContent = 'Concluído';
+        progressCnt.textContent = `Seção ${SECOES.length} de ${SECOES.length}`;
+
+        addBubble("A processar e enviar os dados com segurança...", "ari");
+
+        // Adiciona metadados de rastreabilidade (sem dados pessoais adicionais)
+        const alertas = gerarAlertas();
+        const payload = {
+            ...respostas,
+            _sistema_alertas: alertas,
+            _consentimento_em: consentidoEm,
+            _preenchimento_em: new Date().toLocaleString("pt-BR"),
+            _versao_formulario: "2.0"
+        };
+
+        fetch(CONFIG.FORMSPREE_URL, {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(r => {
+            if (r.ok) {
+                limparRascunho();
+                container.classList.add('hidden');
+                progressWrap.style.display = 'none';
+                btnDirFloat.classList.add('hidden');
+                successScreen.classList.remove('hidden');
+                limparTimeouts();
+            } else {
+                addBubble("Erro no envio. Verifique sua conexão e tente novamente.", "ari");
+                inputSection.classList.remove('hidden');
+            }
+        })
+        .catch(() => {
+            addBubble("Sem conexão com a internet. Verifique e tente novamente.", "ari");
+            inputSection.classList.remove('hidden');
+        });
+    }
+
+    /* ════════════════════════════════════
+       REINICIAR
+    ════════════════════════════════════ */
+    function restartAnamnese() {
+        respostas = {};
+        currentStep = 0;
+        limparRascunho();
+        limparTimeouts();
+
+        container.querySelectorAll('.bubble, .options-grid, .btn-confirm').forEach(b => b.remove());
+        successScreen.classList.add('hidden');
+        container.classList.remove('hidden');
+        progressWrap.style.display = '';
+        btnDirFloat.classList.remove('hidden');
+
+        consentidoEm = new Date().toISOString(); // novo timestamp de consentimento
+        iniciarSessaoTimeout();
+        showStep();
+    }
+
+    /* ════════════════════════════════════
+       EVENTOS
+    ════════════════════════════════════ */
+    document.getElementById('btn-send').addEventListener('click', handleSend);
+    inputEl.addEventListener('keypress', e => { if (e.key === 'Enter') handleSend(); });
+    inputEl.addEventListener('focus', scrollToBottom);
+    inputEl.addEventListener('click', scrollToBottom);
+    window.addEventListener('resize', scrollToBottom);
+
+    document.getElementById('btn-whatsapp').addEventListener('click', () => {
+        window.open(`https://wa.me/${CONFIG.WHATSAPP_NUMBER}`);
+    });
+
+    document.getElementById('btn-redo').addEventListener('click', restartAnamnese);
+
+    /* ════════════════════════════════════
+       INICIALIZAÇÃO
+       (TCLE sempre aparece primeiro)
+    ════════════════════════════════════ */
+    // Rascunho só é carregado se TCLE já tiver sido aceito nesta sessão
+    // (tcle-modal está visível por padrão — o usuário precisa aceitar)
+
+})();
 </script>
 
 </body>
